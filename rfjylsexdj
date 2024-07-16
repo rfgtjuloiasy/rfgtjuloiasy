@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: server
+  profiles:
+    active: dev # 激活dev配置文件
+  datasource:
+    url: jdbc:mysql://${voyager.db.host}:3306/study_db?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ${voyager.db.pw}
+    # druid 相关参数配置
+    druid:
+      # 初始化连接大小
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 5
+      # 最大连接池数量
+      max-active: 20
+      # 获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 测试连接
+      validation-query: SELECT 1 FROM DUAL
+      # 配置监控统计用的filters,过滤掉静态文件
+      web-stat-filter:
+        # 启用Web统计过滤器
+        enabled: true
+        # 过滤匹配规则
+        url-pattern: /*
+        # 过滤忽略的格式
+        exclusions: /druid/*,*.js,*.css,*.gif,*.jpg,*.bmp,*.png,*.ico
+      # 配置可视化控制台页面
+      stat-view-servlet:
+        enabled: true
+        # 访问Druid监控页面的地址，首页默认是 /druid/index.html
+        url-pattern: /druid/*
+        # 禁用重置按钮
+        reset-enable: true
+        # 登录用户名
+        login-username: root
+        # 登录密码
+        login-password: 123456
+      # 通过别名的方式配置扩展插件  常用的插件有：监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall 防御sql注入的filter:wall
+      filter:
+        stat:
+          enabled: true
+          # 是否开启慢sql
+          log-slow-sql: true
+          # 是否开启SQL合并
+          merge-sql: true
+          # 慢sql的时间标准 单位:毫秒
+          slow-sql-millis: 1000
